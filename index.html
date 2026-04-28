@@ -19,17 +19,19 @@ body {
 
 .card {
   background: white;
-  padding: 40px;
+  padding: 30px;
   border-radius: 20px;
   text-align: center;
+  width: 90%;
+  max-width: 350px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-h1 { color: #ff4d6d; }
+h1 { color: #ff4d6d; font-size: 22px; }
 
 button {
-  padding: 12px 25px;
-  font-size: 18px;
+  padding: 12px 20px;
+  font-size: 16px;
   margin: 10px;
   border: none;
   border-radius: 10px;
@@ -41,8 +43,8 @@ button {
 
 .balloon {
   position: absolute;
-  width: 40px;
-  height: 60px;
+  width: 30px;
+  height: 50px;
   border-radius: 50%;
   animation: float 6s linear infinite;
 }
@@ -63,6 +65,11 @@ canvas {
 
 <body>
 
+<!-- 🎵 Audio (mobile safe) -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <div class="card">
   <h1>Will you be my permanent address? ❤️</h1>
   <button id="yes">Yes 💖</button>
@@ -72,7 +79,7 @@ canvas {
 <canvas id="confetti"></canvas>
 
 <script>
-// 🔴 NO button moves forever
+// 🔴 NO button (works on mobile + PC)
 const noBtn = document.getElementById("no");
 
 function moveNo() {
@@ -81,25 +88,26 @@ function moveNo() {
   noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
 }
 
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("click", moveNo);
+noBtn.addEventListener("mouseover", moveNo);   // PC
+noBtn.addEventListener("touchstart", moveNo);  // Mobile
 
-// also auto move continuously
-setInterval(moveNo, 800);
-
-// 💖 YES button action
+// 💖 YES button
 document.getElementById("yes").addEventListener("click", () => {
+  // play music (works on mobile after click)
+  document.getElementById("bgMusic").play();
+
   document.querySelector(".card").innerHTML = `
     <h1>💖 Many Many Congratulations 💖</h1>
-    <h2>Welcome into my heart.❤️Shree❤️</h2>
+    <h2>Welcome into my heart ❤️</h2>
     <p>You just made me the happiest person 🥹✨</p>
   `;
+
   startCelebration();
 });
 
 // 🎈 Balloons
 function startCelebration() {
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 20; i++) {
     const b = document.createElement("div");
     b.className = "balloon";
     b.style.left = Math.random() * 100 + "vw";
@@ -118,11 +126,11 @@ function startConfetti() {
   canvas.height = window.innerHeight;
 
   let confetti = [];
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 120; i++) {
     confetti.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      r: Math.random() * 6 + 2,
+      r: Math.random() * 5 + 2,
       d: Math.random() * 10,
       color: `hsl(${Math.random()*360},100%,50%)`
     });
@@ -151,9 +159,6 @@ function startConfetti() {
 
   setInterval(draw, 20);
 }
-  <audio autoplay loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
 </script>
 
 </body>
